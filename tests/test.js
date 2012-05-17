@@ -39,7 +39,6 @@ ds.core.validate(csdl ,function(err, res, data) {
   console.log("stream validated: " + util.inspect(data));
   //console.log("stream twitter: " + util.inspect(data.stream[0].twitter));
 });
-exit
 ds.core.compile(csdl ,function(err, res, data) {
   console.log(err);
   //console.log(res);

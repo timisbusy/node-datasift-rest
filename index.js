@@ -84,7 +84,12 @@ DataSift.prototype.sendRequest = function sendRequest(call, params, callback){
       callback(err);
     } else {
       data = JSON.parse(data);
-      callback(null, res, data);
+      if (data.error) { 
+        console.log("error: " + data.error);
+        callback(new DataSiftError(data.error));
+      } else {
+        callback(null, res, data);
+      }
     }
   });
 };
