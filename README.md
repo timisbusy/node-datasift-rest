@@ -27,6 +27,13 @@ Does not callback with (err, res, data) as is the default in request. Now uses m
       console.log("balance: " + data);
     });
 
+    var ids = [20731458, 18751623, 363450850];
+
+    ds.helpers.generateTwitterFollowHash(ids, function (err, data) {
+      if (err) { throw err; }
+      console.log(data);
+    });
+
 ## Core API Calls
 
 More info for each call and additional options is available here: [DataSift Rest API Docs](http://dev.datasift.com/docs/rest-api)
