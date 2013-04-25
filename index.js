@@ -1,7 +1,9 @@
 var request = require('request'),
     qs = require('qs'),
     util = require('util'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    helpers = require('./lib/helpers'),
+    core = require('./lib/core');
 
 function DataSift(options){
   if(!options) { throw new Error('You must include your USERNAME and API_KEY in options'); }
@@ -14,89 +16,40 @@ function DataSift(options){
 
   this.core.vars = this.vars;
   this.core.sendRequest = this.sendRequest;
+
+  this.helpers.core = this.core;
 };
 
 
-DataSift.prototype.core = {
-  balance: function balance(callback) {
-    var call = "balance";
-    this.sendRequest(call, this.vars, callback);
-  },
-  compile: function compile(csdl, callback){
-    var call = "compile";
-    var addParams = {
-      csdl: csdl
-    }
-    var params = _.extend(this.vars, addParams);
-    this.sendRequest(call, params, callback);
-  },
-  dpu: function dpu(hash, callback){
-    var call = "dpu";
-    var addParams = {
-      hash: hash
-    }
-    var params = _.extend(this.vars, addParams);
-    this.sendRequest(call, params, callback);
-  },
-  stream: function stream(hash, options, callback){
-    var call = "stream";
-    var addParams = {
-      hash: hash
-    }
-    if(typeof options === 'function'){
-      callback = options;
-    }else{
-      addParams = _.extend(addParams, options);
-    }
-    var params = _.extend(this.vars, addParams);
-    this.sendRequest(call, params, callback);
-  },
-  usage: function usage(period, callback){
-    var call = "usage";
-    var addParams = {
-      period: period
-    }
-    var params = _.extend(this.vars, addParams);
-    this.sendRequest(call, params, callback);
-  },
-  validate: function validate(csdl, callback){
-    var call = "validate";
-    var addParams = {
-      csdl: csdl
-    }
-    var params = _.extend(this.vars, addParams);
-    this.sendRequest(call, params, callback);
-  }
-};
+DataSift.prototype.core = core;
+
+DataSift.prototype.helpers = helpers;
 
 DataSift.prototype.sendRequest = function sendRequest(call, params, callback){
-  var params = _.extend(this.vars, params); 
+  var self = this;
   request.post({
     headers: { 
       'content-type': 'application/x-www-form-urlencoded' 
     },
-    url: "http://api.datasift.com/" + call + "?" + qs.stringify(params),
-    body: qs.stringify(params),
-    form: true
+    url: "http://api.datasift.com/" + call,
+    form: params
   }, function(err, res, data){
     if (err) { 
-      console.log('error here');
-      callback(err);
+      callback(new DataSiftError(err));
     } else {
       data = JSON.parse(data);
-      if (data.error) { 
-        console.log("error: " + data.error);
+      if (data.error) {
         callback(new DataSiftError(data.error));
       } else {
-        callback(null, res, data);
+        callback(null, data, res);
       }
     }
   });
 };
 
-function DataSiftError (errors) {
+function DataSiftError (message) {
   Error.captureStackTrace(this, DataSiftError); 
-  this.errors = errors;
+  this.message = message;
 }
 
 util.inherits(DataSiftError, Error); 
