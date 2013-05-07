@@ -13,13 +13,13 @@ function pickId () {
 }
 
 var ids = [];
-var max_ids = 300;
+var max_ids = 3000;
 for ( var i = 0; i < max_ids; i++ ) {
   ids.push(pickId());
 }
 
 
-ds.helpers.generateTwitterFollowHash(ids, function (err, data) {
+ds.helpers.generateTwitterFollowHash(ids, 80, function (err, data) {
   if (err) { throw err; }
   console.log(data);
 });
