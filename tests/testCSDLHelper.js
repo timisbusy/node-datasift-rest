@@ -19,7 +19,7 @@ for ( var i = 0; i < max_ids; i++ ) {
 }
 
 
-ds.helpers.generateTwitterFollowHash(ids, 80, function (err, data) {
+ds.helpers.generateFacebookFollowHash(ids, 80, function (err, data) {
   if (err) { throw err; }
   console.log(data);
 });
