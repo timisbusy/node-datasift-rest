@@ -2,7 +2,7 @@
   "author": "Tim Atkinson <timisbusy@gmail.com> (http://timisbusy.com)",
   "name": "datasift-rest",
   "description": "NodeJS wrapper for DataSift REST API",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repository": {
     "url": "git@github.com:timisbusy/node-datasift-rest.git"
   },
