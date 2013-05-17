@@ -3,7 +3,8 @@ var request = require('request'),
     util = require('util'),
     _ = require('underscore'),
     helpers = require('./lib/helpers'),
-    core = require('./lib/core');
+    core = require('./lib/core'),
+    push = require('./lib/push');
 
 function DataSift(options){
   if(!options) { throw new Error('You must include your USERNAME and API_KEY in options'); }
@@ -18,6 +19,9 @@ function DataSift(options){
   this.core.sendRequest = this.sendRequest;
 
   this.helpers.core = this.core;
+
+  this.push.vars = this.vars;
+  this.push.sendRequest = this.sendRequest;
 };
 
 
@@ -25,14 +29,16 @@ DataSift.prototype.core = core;
 
 DataSift.prototype.helpers = helpers;
 
+DataSift.prototype.push = push;
+
 DataSift.prototype.sendRequest = function sendRequest(call, params, callback){
-  var self = this;
-  request.post({
-    headers: { 
-      'content-type': 'application/x-www-form-urlencoded' 
-    },
-    url: "http://api.datasift.com/" + call,
-    form: params
+  var headers = {
+    Auth: this.vars.username + ":" + this.vars.api_key
+  };
+  var req = request.post({
+    headers: headers,
+    url: "https://api.datasift.com/" + call,
+    qs: params
   }, function(err, res, data){
     if (err) { 
       callback(new DataSiftError(err));
