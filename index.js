@@ -13,7 +13,7 @@ function DataSift(options){
   this.vars = {
     username: this.username,
     api_key: this.api_key
-  }
+  };
 
   this.core.vars = this.vars;
   this.core.sendRequest = this.sendRequest;
@@ -43,6 +43,7 @@ DataSift.prototype.sendRequest = function sendRequest(call, params, callback){
     if (err) { 
       callback(new DataSiftError(err));
     } else {
+      if (!data) { data = "{}" };
       data = JSON.parse(data);
       if (data.error) {
         callback(new DataSiftError(data.error));
