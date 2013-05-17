@@ -14,9 +14,7 @@
     "node": "*"
   },
   "dependencies": {
-    "request": "latest",
-    "qs": "latest",
-    "underscore": "latest"
+    "request": "latest"
   },
   "devDependencies": {}
 }

@@ -1,7 +1,5 @@
 var request = require('request'),
-    qs = require('qs'),
     util = require('util'),
-    _ = require('underscore'),
     helpers = require('./lib/helpers'),
     core = require('./lib/core'),
     push = require('./lib/push');
@@ -60,13 +58,5 @@ function DataSiftError (message) {
 }
 
 util.inherits(DataSiftError, Error); 
-
-DataSift.prototype.toString = function toString (){
-  var arr = [];
-  _.each(this.errors, function (error) {
-    arr.push(util.inspect(error));
-  });
-  return "DataSiftError: " + arr.join('\n');
-}
 
 module.exports = DataSift;
