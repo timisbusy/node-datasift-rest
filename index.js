@@ -36,7 +36,7 @@ DataSift.prototype.sendRequest = function sendRequest(call, params, callback){
   var req = request.post({
     headers: headers,
     url: "https://api.datasift.com/" + call,
-    qs: params
+    form: params
   }, function(err, res, data){
     if (err) { 
       callback(new DataSiftError(err));
